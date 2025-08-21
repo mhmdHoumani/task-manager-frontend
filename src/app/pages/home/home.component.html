@@ -7,7 +7,7 @@
         Stay organized, boost productivity, achieve your goals
       </p>
 
-      <div class="flex justify-center space-x-4">
+      <div *ngIf="canAccessTasks()" class="flex justify-center space-x-4">
         <a
           routerLink="/tasks"
           class="inline-flex items-center rounded-lg bg-blue-600 px-6 py-3 font-medium text-white transition-colors hover:bg-blue-700"
@@ -23,6 +23,12 @@
           <lucide-icon [img]="Plus" class="mr-2 h-5 w-5"></lucide-icon>
           Create Task
         </a>
+      </div>
+
+      <!-- Message for visitors -->
+      <div *ngIf="!canAccessTasks()" class="text-center">
+        <p class="text-lg text-gray-600 mb-4">Welcome! You have visitor access.</p>
+        <p class="text-gray-500">Contact an administrator to upgrade your account for task management features.</p>
       </div>
     </div>
 

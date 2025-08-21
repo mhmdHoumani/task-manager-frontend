@@ -1,0 +1,37 @@
+<div class="flex min-h-screen items-center justify-center bg-gray-50 px-4">
+  <div class="mx-auto max-w-md text-center">
+    <!-- 403 Illustration -->
+    <div class="mb-8">
+      <div class="mb-4 text-9xl font-bold text-red-600">403</div>
+      <lucide-icon [img]="Shield" class="mx-auto h-16 w-16 text-gray-400"></lucide-icon>
+    </div>
+
+    <!-- Error Message -->
+    <h1 class="mb-4 text-3xl font-bold text-gray-900">Access Denied</h1>
+    <p class="mb-8 text-gray-600">
+      You don't have permission to access this page. Contact your administrator if you believe this
+      is an error.
+    </p>
+
+    <!-- Action Buttons -->
+    <div class="space-y-4">
+      <a
+        routerLink="/"
+        class="inline-flex items-center rounded-lg bg-blue-600 px-6 py-3 font-medium text-white transition-colors hover:bg-blue-700"
+      >
+        <lucide-icon [img]="Home" class="mr-2 h-5 w-5"></lucide-icon>
+        Go to Home
+      </a>
+
+      <div class="text-center">
+        <button
+          (click)="goBack()"
+          class="inline-flex items-center font-medium text-blue-600 hover:text-blue-700"
+        >
+          <lucide-icon [img]="ArrowLeft" class="mr-1 h-4 w-4"></lucide-icon>
+          Go Back
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

@@ -14,3 +14,52 @@ export const authGuard: CanActivateFn = () => {
     return false;
   }
 };
+
+// Admin-only guard
+export const adminGuard: CanActivateFn = () => {
+  const authService = inject(AuthService);
+  const router = inject(Router);
+
+  if (!authService.isLoggedIn()) {
+    router.navigate(['/login']);
+    return false;
+  }
+
+  if (authService.isAdmin()) {
+    return true;
+  } else {
+    router.navigate(['/unauthorized']);
+    return false;
+  }
+};
+
+// User or Admin guard (can access tasks)
+export const userOrAdminGuard: CanActivateFn = () => {
+  const authService = inject(AuthService);
+  const router = inject(Router);
+
+  if (!authService.isLoggedIn()) {
+    router.navigate(['/login']);
+    return false;
+  }
+
+  if (authService.canAccessTasks()) {
+    return true;
+  } else {
+    router.navigate(['/unauthorized']);
+    return false;
+  }
+};
+
+// Visitor access (logged in but any role)
+export const visitorGuard: CanActivateFn = () => {
+  const authService = inject(AuthService);
+  const router = inject(Router);
+
+  if (authService.isLoggedIn()) {
+    return true;
+  } else {
+    router.navigate(['/login']);
+    return false;
+  }
+};

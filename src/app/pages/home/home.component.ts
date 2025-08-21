@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { LucideAngularModule, CheckCircle, Plus, BarChart3 } from 'lucide-angular';
+import { AuthService } from '../../services/auth/auth.service';
 
 @Component({
   selector: 'app-home',
@@ -14,4 +15,10 @@ export class HomeComponent {
   readonly CheckCircle = CheckCircle;
   readonly Plus = Plus;
   readonly BarChart3 = BarChart3;
+
+  constructor(private authService: AuthService) {}
+
+  canAccessTasks(): boolean {
+    return this.authService.canAccessTasks();
+  }
 }

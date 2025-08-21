@@ -2,10 +2,18 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { BehaviorSubject, Observable, tap } from 'rxjs';
 
+export enum UserRole {
+  ADMIN = 'admin',
+  USER = 'user',
+  VISITOR = 'visitor',
+}
+
 export interface User {
   _id: string;
   email: string;
   name: string;
+  role: UserRole;
+  createdAt: Date;
 }
 
 export interface AuthResponse {
@@ -22,6 +30,7 @@ export interface SignupRequest {
   name: string;
   email: string;
   password: string;
+  role?: UserRole; // ← Optional for admin-created users
 }
 
 @Injectable({
@@ -42,20 +51,16 @@ export class AuthService {
 
   // Login
   login(credentials: LoginRequest): Observable<AuthResponse> {
-    return this.http.post<AuthResponse>(`${this.apiUrl}/login`, credentials).pipe(
-      tap((response) => {
-        this.setSession(response);
-      }),
-    );
+    return this.http
+      .post<AuthResponse>(`${this.apiUrl}/login`, credentials)
+      .pipe(tap((response) => this.setSession(response)));
   }
 
   // Signup
   signup(userData: SignupRequest): Observable<AuthResponse> {
-    return this.http.post<AuthResponse>(`${this.apiUrl}/signup`, userData).pipe(
-      tap((response) => {
-        this.setSession(response);
-      }),
-    );
+    return this.http
+      .post<AuthResponse>(`${this.apiUrl}/signup`, userData)
+      .pipe(tap((response) => this.setSession(response)));
   }
 
   // Logout
@@ -78,6 +83,32 @@ export class AuthService {
   // Get token
   getToken(): string | null {
     return localStorage.getItem(this.tokenKey);
+  }
+
+  // ← New role-based methods
+  hasRole(role: UserRole): boolean {
+    const user = this.getCurrentUser();
+    return user?.role === role;
+  }
+
+  isAdmin(): boolean {
+    return this.hasRole(UserRole.ADMIN);
+  }
+
+  isUser(): boolean {
+    return this.hasRole(UserRole.USER);
+  }
+
+  isVisitor(): boolean {
+    return this.hasRole(UserRole.VISITOR);
+  }
+
+  canAccessTasks(): boolean {
+    return this.isAdmin() || this.isUser();
+  }
+
+  canAccessUsers(): boolean {
+    return this.isAdmin();
   }
 
   // Private methods
