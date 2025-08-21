@@ -1,0 +1,230 @@
+<div
+  class="flex min-h-screen items-center justify-center bg-gradient-to-br from-purple-600 to-blue-700 px-4"
+>
+  <div class="w-full max-w-md space-y-8">
+    <!-- Header -->
+    <div class="text-center">
+      <h2 class="mb-2 text-3xl font-bold text-white">Create Account</h2>
+      <p class="text-purple-100">Join us and start managing your tasks</p>
+    </div>
+
+    <!-- Signup Form -->
+    <div class="rounded-lg bg-white p-8 shadow-xl">
+      <form (ngSubmit)="onSubmit()" class="space-y-6">
+        <!-- Name Field -->
+        <div>
+          <label for="name" class="mb-2 block text-sm font-medium text-gray-700"> Full Name </label>
+          <div class="relative">
+            <div class="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
+              <lucide-icon [img]="User" class="h-5 w-5 text-gray-400"></lucide-icon>
+            </div>
+            <input
+              id="name"
+              [(ngModel)]="signupForm.name"
+              name="name"
+              type="text"
+              required
+              class="block w-full rounded-md border border-gray-300 py-2 pl-10 pr-3 focus:border-transparent focus:outline-none focus:ring-2 focus:ring-purple-500"
+              placeholder="Enter your full name"
+            />
+          </div>
+        </div>
+
+        <!-- Email Field -->
+        <div>
+          <label for="email" class="mb-2 block text-sm font-medium text-gray-700">
+            Email Address
+          </label>
+          <div class="relative">
+            <div class="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
+              <lucide-icon [img]="Mail" class="h-5 w-5 text-gray-400"></lucide-icon>
+            </div>
+            <input
+              id="email"
+              [(ngModel)]="signupForm.email"
+              name="email"
+              type="email"
+              required
+              class="block w-full rounded-md border border-gray-300 py-2 pl-10 pr-3 focus:border-transparent focus:outline-none focus:ring-2 focus:ring-purple-500"
+              [class.border-red-300]="signupForm.email && getEmailValidationStatus() === 'invalid'"
+              [class.border-yellow-300]="
+                signupForm.email && getEmailValidationStatus() === 'temporary'
+              "
+              [class.border-green-300]="signupForm.email && getEmailValidationStatus() === 'valid'"
+              placeholder="Enter your email"
+            />
+
+            <!-- Email Status Icon -->
+            <div class="absolute inset-y-0 right-0 flex items-center pr-3">
+              <lucide-icon
+                *ngIf="signupForm.email && getEmailValidationStatus() === 'valid'"
+                [img]="CheckCircle"
+                class="h-5 w-5 text-green-500"
+              ></lucide-icon>
+              <lucide-icon
+                *ngIf="
+                  signupForm.email &&
+                  (getEmailValidationStatus() === 'invalid' ||
+                    getEmailValidationStatus() === 'temporary')
+                "
+                [img]="XCircle"
+                class="h-5 w-5 text-red-500"
+              ></lucide-icon>
+            </div>
+          </div>
+
+          <!-- Email Validation Messages -->
+          <div *ngIf="signupForm.email && getEmailValidationStatus() === 'invalid'" class="mt-1">
+            <p class="text-sm text-red-600">Please enter a valid email address</p>
+          </div>
+          <div *ngIf="signupForm.email && getEmailValidationStatus() === 'temporary'" class="mt-1">
+            <p class="text-sm text-yellow-600">Temporary email addresses are not allowed</p>
+          </div>
+          <div *ngIf="signupForm.email && getEmailValidationStatus() === 'valid'" class="mt-1">
+            <p class="text-sm text-green-600">✓ Valid email address</p>
+          </div>
+        </div>
+
+        <!-- Password Field -->
+        <div>
+          <label for="password" class="mb-2 block text-sm font-medium text-gray-700">
+            Password
+          </label>
+          <div class="relative">
+            <div class="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
+              <lucide-icon [img]="Lock" class="h-5 w-5 text-gray-400"></lucide-icon>
+            </div>
+            <input
+              id="password"
+              [(ngModel)]="signupForm.password"
+              name="password"
+              [type]="showPassword ? 'text' : 'password'"
+              required
+              class="block w-full rounded-md border border-gray-300 py-2 pl-10 pr-10 focus:border-transparent focus:outline-none focus:ring-2 focus:ring-purple-500"
+              [class.border-red-300]="signupForm.password && !isPasswordStrong()"
+              [class.border-green-300]="signupForm.password && isPasswordStrong()"
+              placeholder="Create a password"
+            />
+            <button
+              type="button"
+              (click)="togglePasswordVisibility()"
+              class="absolute inset-y-0 right-0 flex items-center pr-3"
+            >
+              <lucide-icon
+                [img]="showPassword ? EyeOff : Eye"
+                class="h-5 w-5 text-gray-400 hover:text-gray-600"
+              ></lucide-icon>
+            </button>
+          </div>
+
+          <!-- Password Strength Feedback -->
+          <div *ngIf="signupForm.password && !isPasswordStrong()" class="mt-2">
+            <p class="mb-1 text-sm text-red-600">Password must include:</p>
+            <ul class="list-inside list-disc space-y-1 text-xs text-red-600">
+              <li *ngFor="let error of getPasswordErrors()">{{ error }}</li>
+            </ul>
+          </div>
+
+          <div *ngIf="signupForm.password && isPasswordStrong()" class="mt-2">
+            <p class="text-sm text-green-600">✓ Strong password!</p>
+          </div>
+        </div>
+
+        <!-- Confirm Password Field -->
+        <div>
+          <label for="confirmPassword" class="mb-2 block text-sm font-medium text-gray-700">
+            Confirm Password
+          </label>
+          <div class="relative">
+            <div class="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
+              <lucide-icon [img]="Lock" class="h-5 w-5 text-gray-400"></lucide-icon>
+            </div>
+            <input
+              id="confirmPassword"
+              [(ngModel)]="confirmPassword"
+              name="confirmPassword"
+              [type]="showConfirmPassword ? 'text' : 'password'"
+              required
+              class="block w-full rounded-md border border-gray-300 py-2 pl-10 pr-10 focus:border-transparent focus:outline-none focus:ring-2 focus:ring-purple-500"
+              [class.border-red-300]="confirmPassword && getPasswordMatchStatus() === 'mismatch'"
+              [class.border-green-300]="confirmPassword && getPasswordMatchStatus() === 'match'"
+              placeholder="Confirm your password"
+            />
+            <button
+              type="button"
+              (click)="toggleConfirmPasswordVisibility()"
+              class="absolute inset-y-0 right-0 flex items-center pr-3"
+            >
+              <lucide-icon
+                [img]="showConfirmPassword ? EyeOff : Eye"
+                class="h-5 w-5 text-gray-400 hover:text-gray-600"
+              ></lucide-icon>
+            </button>
+          </div>
+          
+          <!-- Password Match Validation -->
+          <div *ngIf="confirmPassword && getPasswordMatchStatus() === 'mismatch'" class="mt-1">
+            <p class="text-sm text-red-600">Passwords do not match</p>
+          </div>
+          <div *ngIf="confirmPassword && getPasswordMatchStatus() === 'match'" class="mt-1">
+            <p class="text-sm text-green-600">✓ Passwords match!</p>
+          </div>
+        </div>
+
+        <!-- Error Message -->
+        <div *ngIf="errorMessage" class="bg-red-50 border border-red-200 rounded-md p-3">
+          <p class="text-sm text-red-600">{{ errorMessage }}</p>
+        </div>
+
+        <!-- Submit Button -->
+        <button
+          type="submit"
+          [disabled]="isLoading || !isValidForm()"
+          class="flex w-full justify-center rounded-md border border-transparent bg-purple-600 px-4 py-2 text-sm font-medium text-white shadow-sm transition-colors hover:bg-purple-700 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-offset-2 disabled:cursor-not-allowed disabled:bg-gray-400"
+        >
+          <span *ngIf="!isLoading">Create Account</span>
+          <span *ngIf="isLoading" class="flex items-center">
+            <svg
+              class="-ml-1 mr-3 h-5 w-5 animate-spin text-white"
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+            >
+              <circle
+                class="opacity-25"
+                cx="12"
+                cy="12"
+                r="10"
+                stroke="currentColor"
+                stroke-width="4"
+              ></circle>
+              <path
+                class="opacity-75"
+                fill="currentColor"
+                d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+              ></path>
+            </svg>
+            Creating account...
+          </span>
+        </button>
+      </form>
+
+      <!-- Login Link -->
+      <div class="mt-6 text-center">
+        <p class="text-sm text-gray-600">
+          Already have an account?
+          <a routerLink="/login" class="font-medium text-purple-600 hover:text-purple-500">
+            Sign in here
+          </a>
+        </p>
+      </div>
+    </div>
+
+    <!-- Additional Info -->
+    <div class="text-center">
+      <p class="text-sm text-purple-100">
+        By creating an account, you agree to our Terms of Service and Privacy Policy
+      </p>
+    </div>
+  </div>
+</div>

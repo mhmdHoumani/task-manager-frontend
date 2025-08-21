@@ -58,11 +58,13 @@ export class TaskListComponent implements OnInit {
       next: (tasks) => {
         this.tasks = tasks;
         console.log('Tasks loaded:', tasks);
-        this.isLoadingTasks = false;
       },
       error: (error) => {
         console.error('Error loading tasks:', error);
         this.tasks = [];
+        this.isLoadingTasks = false;
+      },
+      complete: () => {
         this.isLoadingTasks = false;
       },
     });

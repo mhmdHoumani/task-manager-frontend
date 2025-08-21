@@ -9,35 +9,65 @@
         </a>
       </div>
 
-      <!-- Navigation Links -->
-      <div class="flex items-center space-x-4">
-        <a
-          routerLink="/"
-          routerLinkActive="text-blue-600 bg-blue-50"
-          [routerLinkActiveOptions]="{ exact: true }"
-          class="flex items-center rounded-md px-3 py-2 text-sm font-medium text-gray-700 transition-colors hover:bg-blue-50 hover:text-blue-600"
-        >
-          <lucide-icon [img]="Home" class="mr-2 h-4 w-4"></lucide-icon>
-          Home
-        </a>
+      <!-- Navigation Links and User Menu -->
+      <div class="flex items-center gap-4">
+        <!-- Navigation Links (only show if logged in) -->
+        <div *ngIf="currentUser$ | async as user" class="flex items-center space-x-4">
+          <a
+            routerLink="/"
+            routerLinkActive="text-blue-600 bg-blue-50"
+            [routerLinkActiveOptions]="{ exact: true }"
+            class="flex items-center rounded-md px-3 py-2 text-sm font-medium text-gray-700 transition-colors hover:bg-blue-50 hover:text-blue-600"
+          >
+            <lucide-icon [img]="Home" class="mr-2 h-4 w-4"></lucide-icon>
+            Home
+          </a>
 
-        <a
-          routerLink="/tasks"
-          routerLinkActive="text-blue-600 bg-blue-50"
-          class="flex items-center rounded-md px-3 py-2 text-sm font-medium text-gray-700 transition-colors hover:bg-blue-50 hover:text-blue-600"
-        >
-          <lucide-icon [img]="CheckSquare" class="mr-2 h-4 w-4"></lucide-icon>
-          Tasks
-        </a>
+          <a
+            routerLink="/tasks"
+            routerLinkActive="text-blue-600 bg-blue-50"
+            class="flex items-center rounded-md px-3 py-2 text-sm font-medium text-gray-700 transition-colors hover:bg-blue-50 hover:text-blue-600"
+          >
+            <lucide-icon [img]="CheckSquare" class="mr-2 h-4 w-4"></lucide-icon>
+            Tasks
+          </a>
 
-        <a
-          routerLink="/about"
-          routerLinkActive="text-blue-600 bg-blue-50"
-          class="flex items-center rounded-md px-3 py-2 text-sm font-medium text-gray-700 transition-colors hover:bg-blue-50 hover:text-blue-600"
-        >
-          <lucide-icon [img]="Info" class="mr-2 h-4 w-4"></lucide-icon>
-          About
-        </a>
+          <a
+            routerLink="/about"
+            routerLinkActive="text-blue-600 bg-blue-50"
+            class="flex items-center rounded-md px-3 py-2 text-sm font-medium text-gray-700 transition-colors hover:bg-blue-50 hover:text-blue-600"
+          >
+            <lucide-icon [img]="Info" class="mr-2 h-4 w-4"></lucide-icon>
+            About
+          </a>
+
+          <!-- User Menu -->
+          <div class="ml-4 flex items-center space-x-3 border-l border-gray-200 pl-4">
+            <div class="flex items-center space-x-2">
+              <lucide-icon [img]="UserIcon" class="h-5 w-5 text-gray-600"></lucide-icon>
+              <span class="text-sm font-medium text-gray-700">{{ user.name }}</span>
+            </div>
+
+            <button
+              (click)="logout()"
+              class="flex items-center rounded-md px-3 py-2 text-sm font-medium text-red-700 transition-colors hover:bg-red-50 hover:text-red-600"
+            >
+              <lucide-icon [img]="LogOut" class="mr-2 h-4 w-4"></lucide-icon>
+              Logout
+            </button>
+          </div>
+        </div>
+
+        <!-- Login/Signup Links (only show if not logged in) -->
+        <div *ngIf="!(currentUser$ | async)" class="flex items-center space-x-4">
+          <a routerLink="/login" class="font-medium text-gray-700 hover:text-blue-600"> Login </a>
+          <a
+            routerLink="/signup"
+            class="rounded-md bg-blue-600 px-4 py-2 text-white transition-colors hover:bg-blue-700"
+          >
+            Sign Up
+          </a>
+        </div>
       </div>
     </div>
   </div>

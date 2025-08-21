@@ -1,0 +1,16 @@
+import { CanActivateFn } from '@angular/router';
+import { inject } from '@angular/core';
+import { Router } from '@angular/router';
+import { AuthService } from '../services/auth/auth.service';
+
+export const guestGuard: CanActivateFn = () => {
+  const authService = inject(AuthService);
+  const router = inject(Router);
+
+  if (!authService.isLoggedIn()) {
+    return true; // Allow access to login/signup
+  } else {
+    router.navigate(['/tasks']); // Redirect logged-in users
+    return false;
+  }
+};
