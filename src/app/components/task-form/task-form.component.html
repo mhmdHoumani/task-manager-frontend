@@ -1,0 +1,68 @@
+<div class="mb-8 rounded-lg bg-white p-6 shadow-lg">
+  <div class="mb-6">
+    <h3 class="text-xl font-semibold text-gray-800">Add New Task</h3>
+    <p class="text-sm text-gray-600">Create a new task to stay organized</p>
+  </div>
+
+  <form (ngSubmit)="onSubmit()" class="space-y-4">
+    <!-- Title Input -->
+    <div>
+      <label for="title" class="mb-2 block text-sm font-medium text-gray-700">
+        Task Title <span class="text-red-500">*</span>
+      </label>
+      <input
+        id="title"
+        [(ngModel)]="task.title"
+        name="title"
+        type="text"
+        placeholder="Enter task title..."
+        required
+        class="w-full rounded-md border border-gray-300 px-3 py-2 text-sm placeholder-gray-400 transition-colors focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-20"
+      />
+    </div>
+
+    <!-- Category Dropdown -->
+    <div>
+      <label for="category" class="mb-2 block text-sm font-medium text-gray-700"> Category </label>
+      <select
+        id="category"
+        [(ngModel)]="task.category"
+        name="category"
+        class="w-full rounded-md border border-gray-300 px-3 py-2 text-sm transition-colors focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-20"
+      >
+        <option *ngFor="let category of categories" [value]="category">
+          {{ category }}
+        </option>
+      </select>
+    </div>
+
+    <!-- Description Textarea -->
+    <div>
+      <label for="description" class="mb-2 block text-sm font-medium text-gray-700">
+        Description
+      </label>
+      <textarea
+        id="description"
+        [(ngModel)]="task.description"
+        name="description"
+        placeholder="Enter task description (optional)..."
+        rows="3"
+        class="w-full resize-none rounded-md border border-gray-300 px-3 py-2 text-sm placeholder-gray-400 transition-colors focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-20"
+      ></textarea>
+    </div>
+
+    <!-- Submit Button with Icon -->
+    <div class="pt-2">
+      <button
+        type="submit"
+        [disabled]="!task.title.trim()"
+        class="w-full rounded-md bg-blue-600 px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 disabled:cursor-not-allowed disabled:bg-gray-400 disabled:hover:bg-gray-400"
+      >
+        <span class="flex items-center justify-center">
+          <lucide-icon [img]="Plus" class="mr-2 h-4 w-4"></lucide-icon>
+          {{ task.title.trim() ? 'Add Task' : 'Enter task title to continue' }}
+        </span>
+      </button>
+    </div>
+  </form>
+</div>

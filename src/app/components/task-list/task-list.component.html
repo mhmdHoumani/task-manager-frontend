@@ -1,0 +1,68 @@
+<div class="mx-auto max-w-4xl p-6">
+  <div *ngIf="isLoadingTasks" class="flex w-full h-96 items-center justify-center py-12">
+    <div class="h-10 w-10 animate-spin rounded-full border border-t-blue-500"></div>
+  </div>
+  <div *ngIf="!isLoadingTasks" class="overflow-hidden rounded-lg bg-white shadow-lg">
+    <div class="flex items-center justify-between gap-5 border-b bg-gray-50 px-6 py-4">
+      <h2 class="text-xl font-semibold text-gray-800">Your Tasks ({{ tasks.length }})</h2>
+
+      <!-- Add Task Button -->
+      <button
+        (click)="openAddTaskModal()"
+        class="inline-flex items-center rounded-lg bg-blue-600 px-4 py-2 font-medium text-white shadow-md transition-colors hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
+      >
+        <lucide-icon [img]="Plus" class="mr-2 h-5 w-5"></lucide-icon>
+        Add New Task
+      </button>
+    </div>
+
+    <!-- Empty State -->
+    <div *ngIf="tasks.length === 0" class="p-12 text-center">
+      <div class="mb-4 text-6xl">📝</div>
+      <h3 class="mb-2 text-lg font-medium text-gray-700">No tasks yet!</h3>
+      <p class="mb-4 text-gray-500">Click the "Add New Task" button to get started.</p>
+    </div>
+
+    <!-- Task Items -->
+    <app-task-item
+      *ngFor="let task of tasks; trackBy: trackByTaskId"
+      [task]="task"
+      (editTask)="openEditTaskModal($event)"
+      (deleteTask)="onDeleteTask($event)"
+      (toggleComplete)="onToggleComplete($event)"
+      (viewTask)="openViewTaskModal($event)"
+    >
+    </app-task-item>
+  </div>
+</div>
+
+<!-- Add Task Modal -->
+<app-modal
+  [isOpen]="isAddTaskModalOpen"
+  [title]="'Add New Task'"
+  [size]="'md'"
+  (closeModal)="closeAddTaskModal()"
+>
+  <app-task-form (taskCreated)="onTaskCreated($event)"></app-task-form>
+</app-modal>
+
+<!-- Edit Task Modal -->
+<app-modal
+  [isOpen]="isEditTaskModalOpen"
+  [title]="'Edit Task'"
+  [size]="'md'"
+  (closeModal)="closeEditTaskModal()"
+>
+  <app-edit-task-form *ngIf="taskToEdit" [task]="taskToEdit" (saveTask)="onTaskSaved($event)">
+  </app-edit-task-form>
+</app-modal>
+
+<!-- View Task Modal -->
+<app-modal
+  [isOpen]="isViewTaskModalOpen"
+  [title]="'Task Details'"
+  [size]="'lg'"
+  (closeModal)="closeViewTaskModal()"
+>
+  <app-task-view *ngIf="taskToView" [task]="taskToView"> </app-task-view>
+</app-modal>

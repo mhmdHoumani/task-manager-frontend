@@ -1,0 +1,88 @@
+<div
+  class="border-b p-6 transition-colors last:border-b-0 hover:bg-gray-50"
+  [class.opacity-60]="task.completed"
+>
+  <div class="flex items-start justify-between">
+    <!-- Task Content -->
+    <div class="flex flex-1 flex-col gap-1">
+      <div class="flex gap-2">
+        <h3
+          class="text-lg font-medium"
+          [class.line-through]="task.completed"
+          [class.text-gray-500]="task.completed"
+        >
+          {{ task.title }}
+        </h3>
+
+        <span
+          class="inline-flex items-center rounded-full px-2 py-1 text-xs font-medium"
+          [class.bg-blue-100]="task.category === 'Work'"
+          [class.text-blue-800]="task.category === 'Work'"
+          [class.bg-green-100]="task.category === 'Personal'"
+          [class.text-green-800]="task.category === 'Personal'"
+          [class.bg-purple-100]="task.category === 'Shopping'"
+          [class.text-purple-800]="task.category === 'Shopping'"
+          [class.bg-red-100]="task.category === 'Health'"
+          [class.text-red-800]="task.category === 'Health'"
+          [class.bg-yellow-100]="task.category === 'Finance'"
+          [class.text-yellow-800]="task.category === 'Finance'"
+          [class.bg-indigo-100]="task.category === 'Education'"
+          [class.text-indigo-800]="task.category === 'Education'"
+          [class.bg-pink-100]="task.category === 'Travel'"
+          [class.text-pink-800]="task.category === 'Travel'"
+          [class.bg-gray-100]="task.category === 'General'"
+          [class.text-gray-800]="task.category === 'General'"
+        >
+          {{ task.category }}
+        </span>
+      </div>
+
+      <small class="text-gray-400">
+        {{ task.createdAt | date: 'short' }}
+      </small>
+    </div>
+
+    <!-- Action Buttons -->
+    <div class="flex gap-2">
+      <!-- Complete/Undo Button -->
+      <button
+        (click)="onToggleComplete()"
+        class="rounded-full p-2 transition-colors hover:bg-gray-100"
+        [class.text-green-600]="!task.completed"
+        [class.hover:bg-green-50]="!task.completed"
+        [class.text-orange-600]="task.completed"
+        [class.hover:bg-orange-50]="task.completed"
+        [title]="task.completed ? 'Mark as incomplete' : 'Mark as complete'"
+      >
+        <lucide-icon [img]="task.completed ? RotateCcw : Check" class="h-5 w-5"></lucide-icon>
+      </button>
+
+      <!-- View Button -->
+      <button
+        (click)="onView()"
+        class="rounded-full p-2 text-gray-600 transition-colors hover:bg-gray-50"
+        title="View task details"
+      >
+        <lucide-icon [img]="Eye" class="h-5 w-5"></lucide-icon>
+      </button>
+
+      <!-- Edit Button -->
+      <button
+        (click)="onEdit()"
+        class="rounded-full p-2 text-blue-600 transition-colors hover:bg-blue-50"
+        title="Edit task"
+      >
+        <lucide-icon [img]="Edit" class="h-5 w-5"></lucide-icon>
+      </button>
+
+      <!-- Delete Button -->
+      <button
+        (click)="onDelete()"
+        class="rounded-full p-2 text-red-600 transition-colors hover:bg-red-50"
+        title="Delete task"
+      >
+        <lucide-icon [img]="Trash2" class="h-5 w-5"></lucide-icon>
+      </button>
+    </div>
+  </div>
+</div>

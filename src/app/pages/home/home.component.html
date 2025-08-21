@@ -1,0 +1,50 @@
+<div class="flex-1 bg-gradient-to-br from-blue-50 to-indigo-100">
+  <div class="mx-auto max-w-4xl px-6 py-12">
+    <!-- Hero Section -->
+    <div class="mb-12 text-center">
+      <h1 class="mb-4 text-5xl font-bold text-gray-900">Welcome to Task Manager</h1>
+      <p class="mb-8 text-xl text-gray-600">
+        Stay organized, boost productivity, achieve your goals
+      </p>
+
+      <div class="flex justify-center space-x-4">
+        <a
+          routerLink="/tasks"
+          class="inline-flex items-center rounded-lg bg-blue-600 px-6 py-3 font-medium text-white transition-colors hover:bg-blue-700"
+        >
+          <lucide-icon [img]="CheckCircle" class="mr-2 h-5 w-5"></lucide-icon>
+          View Tasks
+        </a>
+
+        <a
+          routerLink="/tasks"
+          class="inline-flex items-center rounded-lg border border-blue-600 bg-white px-6 py-3 font-medium text-blue-600 transition-colors hover:bg-blue-50"
+        >
+          <lucide-icon [img]="Plus" class="mr-2 h-5 w-5"></lucide-icon>
+          Create Task
+        </a>
+      </div>
+    </div>
+
+    <!-- Features -->
+    <div class="grid gap-8 md:grid-cols-3">
+      <div class="rounded-lg bg-white p-6 shadow-lg">
+        <lucide-icon [img]="CheckCircle" class="mb-4 h-12 w-12 text-blue-600"></lucide-icon>
+        <h3 class="mb-2 text-xl font-semibold">Organize Tasks</h3>
+        <p class="text-gray-600">Keep track of all your tasks with categories and descriptions.</p>
+      </div>
+
+      <div class="rounded-lg bg-white p-6 shadow-lg">
+        <lucide-icon [img]="BarChart3" class="mb-4 h-12 w-12 text-green-600"></lucide-icon>
+        <h3 class="mb-2 text-xl font-semibold">Track Progress</h3>
+        <p class="text-gray-600">Monitor your productivity and completion rates.</p>
+      </div>
+
+      <div class="rounded-lg bg-white p-6 shadow-lg">
+        <lucide-icon [img]="Plus" class="mb-4 h-12 w-12 text-purple-600"></lucide-icon>
+        <h3 class="mb-2 text-xl font-semibold">Easy Creation</h3>
+        <p class="text-gray-600">Quickly add new tasks with our intuitive interface.</p>
+      </div>
+    </div>
+  </div>
+</div>
